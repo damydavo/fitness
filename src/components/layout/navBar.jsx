@@ -1,7 +1,8 @@
 import logo from './assets/images/Logo.png'
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const NavBar = () => {
+const NavBar = ({title}) => {
     return ( 
         <nav className="container flex mx-auto">
 
@@ -24,5 +25,13 @@ const NavBar = () => {
         </nav>
      );
 }
+
+NavBar.defaultProps = {
+  title : 'Fitness'
+}
  
+NavBar.propTypes = {
+  title: PropTypes.string
+}
+
 export default NavBar;

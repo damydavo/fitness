@@ -3,7 +3,7 @@ import banner from './assets/images/banner.png'
 const Hero = () => {
     return ( 
         <div className="flex-col md:flex-row gap-40">
-        <div className="flex flex-col mt-30 relative">
+        <div className="flex flex-col mt-40 relative">
         <h2 className="text-brightRed font-bold py-6 text-2xl">Fitness Club</h2>
         <div className="space-y-4 font-bold">
             <h1 className="text-3xl">Sweet, Smile</h1>
