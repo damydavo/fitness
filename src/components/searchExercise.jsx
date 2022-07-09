@@ -1,8 +1,25 @@
-import { useState } from "react"
+import { useState, useEffect, useContext } from "react"
 import { exerciseOptions, FetchData } from "./utils/fetchData"
+import HorizontalScrollBar from "./horizontalScrollBar"
+import SearchContext from "./context/search/searchContext"
+
 
 const SearchExercise = () => {
     const [ text, setText ] = useState('')
+    const { bodyParts, setBodyParts, setExercises } = useContext(SearchContext)
+
+
+    useEffect(() => {
+      const fetchCategoryExercise = async () => {
+        const bodyPartsData = await FetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions)
+
+        setBodyParts(['all', ...bodyPartsData])
+
+      }
+
+      fetchCategoryExercise()
+
+    }, [])
 
    const handleChange = (e) => {
        setText(e.target.value)
@@ -10,15 +27,23 @@ const SearchExercise = () => {
 
  const handleSubmit = async (e) => {
   e.preventDefault()
-     if(text){
-      const exerciseData = await FetchData('https://exercisedb.p.rapidapi.com/exercises', exerciseOptions)
-      console.log(exerciseData)
+    
+      const exerciseData =  text && await FetchData('https://exercisedb.p.rapidapi.com/exercises', exerciseOptions)
 
-     } 
+      const searchedData = exerciseData.filter(exercise => {
+        return (
+          exercise.name.toLowerCase().includes(text)||
+          exercise.equipment.toLowerCase().includes(text)||
+          exercise.bodyPart.toLowerCase().includes(text)||
+          exercise.target.toLowerCase().includes(text)
+        )
+      })
+
+     
    setText('')
+   setExercises(searchedData)
+
  }
-
-
 
     return ( 
         <>
@@ -41,7 +66,8 @@ const SearchExercise = () => {
         
       </div>   
 </form>
-           
+
+         <HorizontalScrollBar data = {bodyParts} />
         </>
      );
 }
